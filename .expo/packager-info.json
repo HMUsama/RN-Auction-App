@@ -1,0 +1,10 @@
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 111016,
+  "expoServerNgrokUrl": "https://g9-vtg.anonymous.auctionapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.g9-vtg.anonymous.auctionapp.exp.direct",
+  "ngrokPid": 111452,
+  "webpackServerPort": null
+}
