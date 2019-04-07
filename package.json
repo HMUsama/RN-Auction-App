@@ -17,6 +17,8 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-code-input": "^1.0.6",
     "react-native-elements": "^1.1.0",
+    "react-native-elements-prompt": "^1.0.2",
+    "react-native-input-prompt": "^1.0.0",
     "react-native-modal": "^9.0.0",
     "react-native-modal-datetime-picker": "^6.1.0",
     "react-native-vector-icons": "^6.3.0",
@@ -25,7 +27,8 @@
     "react-redux-firebase": "^2.2.6",
     "redux": "^4.0.1",
     "redux-firestore": "^0.7.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"

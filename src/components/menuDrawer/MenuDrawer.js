@@ -56,9 +56,9 @@ async componentWillMount(){
                 </View>
             </View>
              <View style={styles.bottomLinks}>
-                {this.navlink('Dashboard','Dashboard')}
+                {this.navlink('Dashboard','Home')}
                 {this.navlink('CreatePost','Create Auction')}
-                {this.navlink('ViewAuction','View Auction')}
+                {this.navlink('ViewAuction','My Auction')}
                 {this.navlink('LogOut','LogOut')}
              </View>
       {/* </ScrollView> */}

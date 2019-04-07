@@ -1,16 +1,24 @@
 import React from 'react';
-import {View, ScrollView, Image, Text, StyleSheet, TouchableOpacity,TextInput, Button, KeyboardAvoidingView,} from 'react-native'
+import {View, ScrollView, Image, Text, StyleSheet,
+       TouchableOpacity,TextInput, Button,
+       KeyboardAvoidingView,AsyncStorage} from 'react-native'
 import { Header } from 'react-native-elements'
 import MenuButton from '../components/button/MenuButton'
 // import Modal from 'react-native-modal'
 // import { TextInput } from 'react-native-gesture-handler';
-import { ImagePicker } from 'expo';
+import { ImagePicker,Permissions, } from 'expo';
 import { connect } from 'react-redux'
 import {compose} from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
+import {createAuction} from '../store/actions/createPostAction'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment'
+// import 'firebase/firestore';
+import firebase from '../config/FbConfig'
+import uuid from 'uuid';
+
+
 
  class CreatePost extends React.Component {
   constructor(props){
@@ -22,41 +30,101 @@ import moment from 'moment'
       category:'',
       isDateTimePickerVisibleStart: false,
       isDateTimePickerVisibleEnd: false,
-      image: null,
-      StartTime:null,
-      EndTime:null,
+      image:'',
     }
   }
-  uploadAuction(){
 
+async componentWillMount(){
+  let userINFO = await AsyncStorage.getItem('userINFO');
+  let U = JSON.parse(userINFO);
+  this.setState({
+      ID:U.ID,
+  })
+}
+
+  uploadAuction(){
+    const { name,decscrition,Bid,category,image,StartTime,EndTime} = this.state
+    if (!name ) {
+      alert('Please add name')
+  } 
+  else if (!decscrition && decscrition.length < 10) {
+      // alert('Describe briefly ')
+  } else if (!category) {
+      alert('Insert Category')
   }
+  //  else if (moment(StartTime) <= moment(Date.now())) {
+   else if (!StartTime) {
+      alert('select atlest 10 mint to the current time')
+  } 
+  else if (!EndTime) {
+      alert('Please Select Ending Time')
+  } 
+  else if (!Bid) {
+    alert('Please Add Minimum Price')
+  } 
+  // else if (!image) {
+  //     alert('Please Select Image')
+  // }
+  else {
+    // alert('upload Your Auction')
+    this.props.createAuction(this.state)
+  }
+}
 
 
   ImagePicker = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-    });
+        await Permissions.askAsync(Permissions.CAMERA);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        });
+        if (!result.cancelled) {
+            this.setState({ image: result.uri });
+          }
 
-    console.log(result);
+    // let result = await ImagePicker.launchImageLibraryAsync({
+    //   allowsEditing: true,
+    // });
 
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
+    // console.log(result);
+
+    // if (!result.cancelled) {
+    //   this.setState({ image: result.uri });
+    // }
   
 
-    
-    console.log('Click Image func')
     // await Permissions.askAsync(Permissions.CAMERA);
-    // await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    // const pickerResult = await ImagePicker.launchImageLibraryAsync({
-    //     allowsEditing: true,
-    // });
-    // this._handleImagePicked(pickerResult);
+    //     await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    //     const pickerResult = await ImagePicker.launchImageLibraryAsync({
+    //         allowsEditing: true,
+    //         // aspect: 1,
+    //     });
+    //     this._handleImagePicked(pickerResult);
 };
 
+// _handleImagePicked = async (pickerResult) => {
+//   console.log("------------",pickerResult)
+//   try {
+
+//       if (!pickerResult.cancelled) {
+//           uploadUrl = await uploadImageAsync(pickerResult.uri);
+//           console.log('url>>>>>>>>>>>>>',uploadUrl )
+//           this.setState({ image: uploadUrl });
+//       }
+//   } catch (e) {
+//       console.log(e);
+//       alert('Upload failed, sorry :(');
+//   } finally {
+//       // this.setState({ uploading: false });
+//       console.log('finally');
+
+//   }
+// };
 
 
-  //Start-------------- Date------------------ Picked
+
+  // Start-------------- Date------------------ Picked
+ 
   _showDateTimePickerStart = () => this.setState({ isDateTimePickerVisibleStart: true });
   _hideDateTimePickerStart = () => this.setState({ isDateTimePickerVisibleStart: false });
 
@@ -68,16 +136,16 @@ import moment from 'moment'
   };
 
   //End--------------- Date---------------- Picked
-      _showDateTimePickerEnd = () => this.setState({ isDateTimePickerVisibleEnd: true });
-      _hideDateTimePickerEnd = () => this.setState({ isDateTimePickerVisibleEnd: false });
-  
-      EndDatePicked = (date) => {
-          this.setState({
-              EndTime: moment(date).format("LLLL")
-          })
-          this._hideDateTimePickerEnd();
-      };
-  
+  _showDateTimePickerEnd = () => this.setState({ isDateTimePickerVisibleEnd: true });
+  _hideDateTimePickerEnd = () => this.setState({ isDateTimePickerVisibleEnd: false });
+
+  EndDatePicked = (date) => {
+      this.setState({
+          EndTime: moment(date).format("LLLL")
+      })
+      this._hideDateTimePickerEnd();
+  };
+
   
   Button = async () =>{  
     this.props.navigation.navigate("Home")
@@ -87,7 +155,7 @@ import moment from 'moment'
     return (
       <View style={styles.container}>
        <Header
-        centerComponent={{ text: 'Create a Post', style: { color: '#fff'  } }}
+        centerComponent={{ text: 'Create a Auction', style: { color: '#fff'  } }}
         rightComponent={{ icon: 'home', color: '#fff' }}
         /><MenuButton navigation={this.props.navigation}/>
           <ScrollView>
@@ -241,18 +309,20 @@ import moment from 'moment'
     );
   }
 }
+
 const mapDispatchToProps=(dispatch)=>{
   return {
-    // Location:(CurrentLocation) => dispatch(Location(CurrentLocation))
+    createAuction:(Auction) => dispatch(createAuction(Auction))
   }
 }
 
-const mapStateToProps=(state,ownProps)=>{
-  return {
-      User:users
-  }
-}
-export default compose(connect(mapStateToProps,mapDispatchToProps),
+// const mapStateToProps=(state,ownProps)=>{
+//   return {
+//       // User:users
+//   }
+// }
+
+export default compose(connect(null,mapDispatchToProps),
                         firestoreConnect([
                             // {collection:"circle"}
                         ])
@@ -329,3 +399,28 @@ submitButton:{
     color:'white',
   },
 });
+
+
+// async function uploadImageAsync(uri) {
+//   const blob = await new Promise((resolve, reject) => {
+//     const xhr = new XMLHttpRequest();
+//     xhr.onload = function () {
+//         resolve(xhr.response);
+//     };
+//     xhr.onerror = function (e) {
+//         console.log(e);
+//         reject(new TypeError('Network request failed'));
+//     };
+//     xhr.responseType = 'blob';
+//     xhr.open('GET', uri, true);
+//     xhr.send(null);
+// });
+// const ref = firebase.storage() .ref() .child(uuid.v4());
+// const snapshot = await ref.put(blob);
+// console.log(blob)
+
+// // We're done with the blob, close and release it
+// blob.close();
+
+// return await snapshot.ref.getDownloadURL();
+// }

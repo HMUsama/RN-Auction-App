@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View,Button,Platform ,Linking,Dimensions,AppState,AsyncStorage} from 'react-native'
+import {StyleSheet, View ,ScrollView, Image, Text,AsyncStorage,
+  TouchableOpacity, ActivityIndicator, RefreshControl, Button} from 'react-native'
 import { Header } from 'react-native-elements'
 import MenuButton from '../components/button/MenuButton'
 import Modal from 'react-native-modal'
@@ -7,14 +8,40 @@ import Modal from 'react-native-modal'
 // import { connect } from 'react-redux'
 // import {compose} from 'redux'
 // import { firestoreConnect } from 'react-redux-firebase'
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
  class ViewAuction extends React.Component {
   constructor(){
     super()
     this.state={
+      ID:''
     }
   }
-
+  getAccountFromFirestore (){
+    try {
+      const db = firebase.firestore();
+     db.collection('Auction').doc().get().then(res=>{
+      console.log("--------------------------------------->>-My Auction",res.data());
+     })
+      // db.docs.map( a => a.data());
+      // console.log("--------------------------------------->>-My Auction",data);
+      // this.setState({ Users: data });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  storage = async ()=>{
+    let userINFO = await AsyncStorage.getItem('userINFO');
+    let U = JSON.parse(userINFO);
+    this.setState({
+        ID:U.ID,
+    });
+  }
+ componentWillMount (){
+      this.storage();
+      this.getAccountFromFirestore();
+  }
   
   Button = async () =>{  
     this.props.navigation.navigate("Home")
@@ -27,8 +54,15 @@ import Modal from 'react-native-modal'
         rightComponent={{ icon: 'home', color: '#fff' }}
         />
       <MenuButton navigation={this.props.navigation}/>
- 
-      <Text>View Auction</Text>
+            <View>
+                <Text style={{ alignItems: 'center', fontSize: 25, 
+                               fontWeight: "bold", color: '#072134', 
+                               paddingLeft: 50 }}>Complete Auction's</Text>
+
+                <ScrollView  horizontal={false}  showsHorizontalScrollIndicator={false}>
+                  
+                </ScrollView>
+            </View>
       </View>
     );
   }

@@ -1,18 +1,16 @@
 import React, {Component} from "react";
-import {View, Text, ScrollView, Image, Text, StyleSheet, TouchableOpacity, TextInput, Button, KeyboardAvoidingView,} from "react-native";
-import { Constants, Location, Permissions, Contacts ,ImagePicker} from 'expo';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import moment from 'moment'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {View, Text, ScrollView, StyleSheet, Image} from "react-native";
 
-class AuctionList extends Component {
+class Category extends Component {
 
 
     render() {
         return (
-                <View style={{height:130,width:130,marginLeft:20,borderWidth:0.5,borderColor:'#dddddd'}}>
+                <View style={{height:150,width:150,marginLeft:20,borderWidth:0.5,borderColor:'#dddddd'}}>
                     <View style={{flex:2}}>
-                        <Image source={this.props.imageUri} 
+                        <Image 
+                        // source={this.props.imageUri} 
+                        source={this.props.imageUri} 
                             style={{flex:1,width:null,height:null,resizeMode:'cover'}}
                         />
                     </View>
@@ -25,7 +23,7 @@ class AuctionList extends Component {
 }
 
 
-export default AuctionList;
+export default Category;
 
 const styles = StyleSheet.create({
     container: {

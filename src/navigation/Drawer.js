@@ -34,9 +34,9 @@ const StackNavigator = createStackNavigator({
 })
 const DrawerNavigator = createDrawerNavigator(
     {   
-        // Dashboard: {
-        //     screen: Dashboard
-        // },
+        Dashboard: {
+            screen: Dashboard
+        },
         CreatePost: {
             screen: CreatePost
         },

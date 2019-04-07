@@ -1,6 +1,6 @@
-# Family Tracker App
+# Auction App
 
-Family Tracker App is `React Native` Project ,Also `Redux`
+Auctions App is `React Native` Project ,Also `Redux`
 
 ## Installation Instructions
 

@@ -5076,6 +5076,13 @@ react-native-easy-grid@0.2.1:
   dependencies:
     lodash "4.17.11"
 
+react-native-elements-prompt@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-elements-prompt/-/react-native-elements-prompt-1.0.2.tgz#884dff3dd8aeb70766358e0a9b86b0be78c368e5"
+  integrity sha512-lQG7GFLwd/x2Vvr025Hd70/fOHt2wbJyYc5YILJgPT9Z1NKHa6nhyaOIcJZl9VQLocL0yCnO/MBTQTj+yX8Nhw==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-native-elements@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-1.1.0.tgz#f99bcda4459a886f3ab4591c684c099d37aedf2b"
@@ -5097,6 +5104,11 @@ react-native-gesture-handler@~1.0.14:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
     prop-types "^15.5.10"
+
+react-native-input-prompt@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-input-prompt/-/react-native-input-prompt-1.0.0.tgz#06e858436156f206065f33ef3b2d971fd312db0f"
+  integrity sha512-xDXMD80KiJWb3sWQZpcsRfE5ZFTDXhwZPUmBPQNSvYI5l+0M4l5usHMcNNWubKZCL4Vg152cnEMtLLpjqRxAYg==
 
 react-native-iphone-x-helper@^1.0.3:
   version "1.2.0"
