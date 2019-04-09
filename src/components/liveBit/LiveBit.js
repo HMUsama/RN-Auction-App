@@ -88,7 +88,7 @@ class LiveBit extends Component {
                 </Text> 
             </View>
             <View style={{ alignItems: 'center' }}>
-                 <Image source={this.props.imageUri} style={{width: 200, height: 110}}
+                 <Image source={{uri:this.props.imageUri}} style={{width: 200, height: 210}}
                  />
             </View>
             <View style={{}}>
@@ -119,7 +119,7 @@ class LiveBit extends Component {
               text:'OK',
               color:'orange'
             }}
-            cancelButton={{
+            cancelButton={{ 
               text:'Cancel',
               color:'red'
             }}
@@ -128,6 +128,8 @@ class LiveBit extends Component {
           />
           <Button
             title='Your Bid'
+            color="#009688"
+            width="500"
             onPress={ this._showPrompt.bind(this,currentIndex) }
           />
             </View>

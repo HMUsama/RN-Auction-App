@@ -13,6 +13,7 @@ import { firestoreConnect } from 'react-redux-firebase'
 import {createAuction} from '../store/actions/createPostAction'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { Dropdown } from 'react-native-material-dropdown';
 import moment from 'moment'
 // import 'firebase/firestore';
 import firebase from '../config/FbConfig'
@@ -43,64 +44,64 @@ async componentWillMount(){
   })
 }
 
-  uploadAuction(){
-    const { name,decscrition,Bid,category,image,StartTime,EndTime} = this.state
-    if (!name ) {
-      alert('Please add name')
-  } 
-  else if (!decscrition && decscrition.length < 10) {
-      alert('Describe briefly ')
-  } else if (!category) {
-      alert('Insert Category')
-  }
-  //  else if (moment(StartTime) <= moment(Date.now())) {
-   else if (!StartTime) {
-      alert('select atlest 10 mint to the current time')
-  } 
-  else if (!EndTime) {
-      alert('Please Select Ending Time')
-  } 
-  else if (!Bid) {
-    alert('Please Add Minimum Price')
-  } 
-  else if (!image) {
-      alert('Please Select Image')
-  }
-  else {
-    // alert('upload Your Auction')
-    this.props.createAuction(this.state)
-  }
+uploadAuction(){
+  const { name,decscrition,Bid,category,image,StartTime,EndTime} = this.state
+  if (!name ) {
+    alert('Please add name')
+} 
+else if (!decscrition && decscrition.length < 10) {
+    alert('Describe briefly ')
+} else if (!category) {
+    alert('Insert Category')
+}
+//  else if (moment(StartTime) <= moment(Date.now())) {
+ else if (!StartTime) {
+    alert('select atlest 10 mint to the current time')
+} 
+else if (!EndTime) {
+    alert('Please Select Ending Time')
+} 
+else if (!Bid) {
+  alert('Please Add Minimum Price')
+} 
+else if (!image) {
+    alert('Please Select Image')
+}
+else {
+  // alert('upload Your Auction')
+  this.props.createAuction(this.state)
+}
 }
 
 
-  ImagePicker = async () => {
-        await Permissions.askAsync(Permissions.CAMERA);
-        await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        let result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        });
-        if (!result.cancelled) {
-            this.setState({ image: result.uri });
-          }
+ImagePicker = async () => {
+      await Permissions.askAsync(Permissions.CAMERA);
+      await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      });
+      if (!result.cancelled) {
+          this.setState({ image: result.uri });
+        }
 
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //   allowsEditing: true,
-    // });
+  // let result = await ImagePicker.launchImageLibraryAsync({
+  //   allowsEditing: true,
+  // });
 
-    // console.log(result);
+  // console.log(result);
 
-    // if (!result.cancelled) {
-    //   this.setState({ image: result.uri });
-    // }
-  
+  // if (!result.cancelled) {
+  //   this.setState({ image: result.uri });
+  // }
 
-    // await Permissions.askAsync(Permissions.CAMERA);
-    //     await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    //     const pickerResult = await ImagePicker.launchImageLibraryAsync({
-    //         allowsEditing: true,
-    //         // aspect: 1,
-    //     });
-    //     this._handleImagePicked(pickerResult);
+
+  // await Permissions.askAsync(Permissions.CAMERA);
+  //     await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  //     const pickerResult = await ImagePicker.launchImageLibraryAsync({
+  //         allowsEditing: true,
+  //         // aspect: 1,
+  //     });
+  //     this._handleImagePicked(pickerResult);
 };
 
 // _handleImagePicked = async (pickerResult) => {
@@ -152,7 +153,28 @@ async componentWillMount(){
     this.props.navigation.navigate("Home")
   }
   render() {
-    const { EndTime, text, StartTime, image, Bid } = this.state
+    const { EndTime, text, StartTime, image, Bid } = this.state;
+    console.log("Category................>>>",this.state.category)
+    let Category = [{
+      value: 'Mobile',
+  }, {
+      value: 'Laptop',
+  },
+  {
+      value: 'Tablets',
+  }, {
+      value: 'Tickets',
+  }, {
+      value: 'Tv',
+  }, {
+      value: 'Motorbike',
+  }, {
+      value: 'Car',
+  },
+   {
+      value: 'Home  ',
+  },
+  ];
     return (
       <View style={styles.container}>
        <Header
@@ -204,13 +226,19 @@ async componentWillMount(){
                          <View>
                               <View style={styles.headings}><Text style={styles.HeadingText}>Product Category</Text></View>
                                   <View style={styles.InputDiv}>
-                                      <TextInput
+                                  <Dropdown
+                                    label='Select category'
+                                    data={Category}
+                                    selectedItemColor={'#0080ff'}
+                                    onChangeText={e => this.setState({ category: e })}
+                                />
+                                      {/* <TextInput
                                           style={styles.InputFields}
                                           multiline={true}
                                           onChangeText={(category) => this.setState({ category })}
                                           placeholder='Insert  Category'
                                           value={this.state.text}
-                                      />
+                                      /> */}
                                 </View>
                             </View>
 {/* ==================== */}  
@@ -353,7 +381,7 @@ InputDiv: {
   padding: 5,
 },
 MainView: {
-  margin: 5,
+  // margin: 5,
   backgroundColor: '#3BADC7',
   // borderRadius: 10,
 },
@@ -390,7 +418,7 @@ submitButton:{
   color:'#1079E0',
   height:80,
   width:80,
-  marginTop:20,
+  marginTop:35,
   borderRadius:45,
   // color:'#1079E0',
   // borderRadius:'50'

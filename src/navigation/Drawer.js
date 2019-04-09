@@ -9,7 +9,8 @@ import MenuDrawer from '../components/menuDrawer/MenuDrawer'
 import LogOut from '../screens/Logout'
 import Dashboard from '../screens/Dashboard'
 import CreatePost from '../screens/CreatePost'
-import ViewAuction from '../screens/ViewAuction'
+import MyAuction from '../screens/MyAuction'
+import Inbox from '../screens/Inbox'
 
 
 const WIDTH = Dimensions.get('window').width;
@@ -28,8 +29,11 @@ const StackNavigator = createStackNavigator({
     CreatePost: {
         screen: CreatePost
     },
-    ViewAuction: {
-        screen: ViewAuction
+    MyAuction: {
+        screen: MyAuction
+    },
+    Inbox: {
+        screen: Inbox
     },
 })
 const DrawerNavigator = createDrawerNavigator(
@@ -40,8 +44,11 @@ const DrawerNavigator = createDrawerNavigator(
         CreatePost: {
             screen: CreatePost
         },
-        ViewAuction: {
-            screen: ViewAuction
+        MyAuction: {
+            screen: MyAuction
+        },
+        Inbox: {
+            screen: Inbox
         },
         LogOut: {
             screen: LogOut

@@ -38,9 +38,6 @@ async componentWillMount(){
         Picture:U.Picture,
     })
 }
-// menu(){
-//     this.props.navigation.navigate("Home")
-// }
   render() {
     return (
      <View style={styles.container}>
@@ -58,7 +55,8 @@ async componentWillMount(){
              <View style={styles.bottomLinks}>
                 {this.navlink('Dashboard','Home')}
                 {this.navlink('CreatePost','Create Auction')}
-                {this.navlink('ViewAuction','My Auction')}
+                {this.navlink('MyAuction','My Auction')}
+                {this.navlink('Inbox','Inbox')}
                 {this.navlink('LogOut','LogOut')}
              </View>
       {/* </ScrollView> */}

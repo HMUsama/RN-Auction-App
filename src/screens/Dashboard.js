@@ -25,20 +25,17 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      Users:[
-      //   {Bid:"12",Category:"Mobile",Discription:"i am selling a new Mobile samsung",EndTime:"Tuesday, April 9, 2019 5:25 AM",
-      // ID:"2200981996831728",
-      // Image:"file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FHckathonFinal-bb3fbc9d-1e5f-47bc-8aca-9b651be181de/ImagePicker/84efdaaf-7122-4e0c-9a21-2025eb1a562d.jpg",
-      // Name:"Usama",StartTime:"Thursday, April 4, 2019 1:05 PM"}
-    ],
+      Users:[],
     refreshing:false,
+    serach:'',
+    result:null,
     }
 }
 
 getAccountFromFirestore = async () => {
   try {
-    const accounts = await firebase.firestore().collection('Auction').get();
-    const data = accounts.docs.map( a => a.data());
+    const allAuctions = await firebase.firestore().collection('Auction').get();
+    const data = allAuctions.docs.map( a => a.data());
     console.log("----------------------------------------CCCC----------------------------------------",data);
     this.setState({ Users: data });
   } catch (err) {
@@ -53,7 +50,19 @@ getAccountFromFirestore = async () => {
         this.startHeaderHieght = 75 + StatusBar.currentHeight;
     }
 }
-serach(){ alert("data")}
+serach=async() =>{
+// serach(){
+  const {serach}  = this.state;
+  console.log("Searching...................",serach)
+  try {
+    const allAuctions = await firebase.firestore().collection('Auction').where('Category','==',serach).get();
+    const data = allAuctions.docs.map( a => a.data());
+    console.log("Categorys---------------------------------Category-----------------------Category->",data);
+    this.setState({ result: data });
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 _onRefresh = () => {
   const { Users } = this.state;
@@ -65,8 +74,8 @@ _onRefresh = () => {
   this.setState({ refreshing: false });
 }
   render() {
-    const {Users} = this.state;
-    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>BBBBB",Users)
+    const {Users,result,serach} = this.state;
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>BBBBB",result)
   
     return (
 
@@ -86,11 +95,11 @@ _onRefresh = () => {
                           {/* <Icon name="ios-search" size={25} style={{marginLeft:20}}/> */}
                           <TextInput 
                           underlineColorAndroid="transparent"
-                          placeholder="Try New karachi"
+                          placeholder="Search here Items"
                           placeholderColor="gray"
                           style={{flex:1,fontWeidth:'700',marginLeft:40,
                           backgroundColor:'white'}}
-                          // onChange=
+                          onChangeText={(serach) => this.setState({ serach })}
                           />
                           <Icon name="ios-search" size={25} style={{marginLeft:17}}onPress={()=>this.serach()}/>
               </View>
@@ -130,19 +139,42 @@ _onRefresh = () => {
                         <View style={{marginTop:15}}>
                         <Text style={{ fontSize: 25, fontWeight: "bold", color: '#072134', paddingLeft: 50,marginTop:5 }}> Live Auctions</Text>
                             <ScrollView  horizontal={true}  showsHorizontalScrollIndicator={false}>
-                            {
-                              Users.map((i,index)=>{
-                              return   <LiveBit
-                                        index={index}
-                                        id={i.ID}
-                                        bid={i.Bid}
-                                        imageUri={i.Image}
-                                        S_Time={i.StartTime}
-                                        E_Time={i.EndTime}
-                                        name={i.Name}
-                                      />
-                                    })
-                            }
+                        {
+                       result !==null && serach !=="" ?  <View>
+                         <ScrollView  horizontal={true}  showsHorizontalScrollIndicator={false}>
+                         {
+                              result.map((i,index)=>{
+                                return   <LiveBit
+                                index={index}
+                                id={i.ID}
+                                bid={i.Bid}
+                                imageUri={i.Image}
+                                S_Time={i.StartTime}
+                                E_Time={i.EndTime}
+                                name={i.Name}
+                              />
+                              })
+                         }
+                       </ScrollView>
+                       </View>
+                         : <View>
+                                     <ScrollView  horizontal={true}  showsHorizontalScrollIndicator={false}>
+                          {
+                            Users.map((i,index)=>{
+                            return   <LiveBit
+                                      index={index}
+                                      id={i.ID}
+                                      bid={i.Bid}
+                                      imageUri={i.Image}
+                                      S_Time={i.StartTime}
+                                      E_Time={i.EndTime}
+                                      name={i.Name}
+                                    />
+                                  })
+                          }
+                          </ScrollView>
+                          </View>
+                        }
                             </ScrollView>
                         </View>
                        
@@ -205,7 +237,7 @@ export default compose(connect(mapStateToProps,null),
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    marginTop:20,
+    // marginTop:20,
     backgroundColor: '#3BADC7',
     alignItems: 'center',
     justifyContent: 'center',
