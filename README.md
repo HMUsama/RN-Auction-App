@@ -11,8 +11,7 @@ Run following commands in project home folder
 
 ### Features
 * Facebook Login 
-* Google Map
-* Current Location
+* Auction Any World
 
 #### Setup
 

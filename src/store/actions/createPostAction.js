@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+// import uuid from 'uuid';
 
 
 export const createAuction = (Auction) =>{
@@ -11,9 +11,11 @@ export const createAuction = (Auction) =>{
         console.log("ID-----------------",ID)
 
         firestore .collection("Auction").doc(ID).set({
-        // firestore .collection("ALLAuctions").doc(ID).collection('Auctions').doc().set({
-        // firestore.collection("Users").doc(ID).collection('Auction').doc(uid).add({ 
-        // firestore.collection("Users").doc(ID).collection('Auction').add({ 
+    //     firestore .collection("Auction").doc(uuid).set({
+    //     // firestore .collection("allAuctions").doc().collection('Auctions').add({
+    //     // firestore.collection("Users").doc(ID).collection('Auction').doc(uid).add({ 
+    //     // firestore.collection("Users").doc(ID).collection('Auction').add({ 
+    //       uid:uuid,
           ID:Auction.ID,  
           Name:Auction.name,
           Bid:Auction.Bid,

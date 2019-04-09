@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, ScrollView, Image, Text, StyleSheet,
-       TouchableOpacity,TextInput, Button,
+       TouchableOpacity,TextInput, Button,YellowBox,
        KeyboardAvoidingView,AsyncStorage} from 'react-native'
 import { Header } from 'react-native-elements'
 import MenuButton from '../components/button/MenuButton'
@@ -17,6 +17,7 @@ import moment from 'moment'
 // import 'firebase/firestore';
 import firebase from '../config/FbConfig'
 import uuid from 'uuid';
+YellowBox.ignoreWarnings(['Warning: ...']);
 
 
 
@@ -24,13 +25,13 @@ import uuid from 'uuid';
   constructor(props){
     super(props)
     this.state={
-      name:'',
-      decscrition:'',
-      Bid:'',
-      category:'',
+      // name:'',
+      // decscrition:'',
+      // Bid:'',
+      // category:'',
       isDateTimePickerVisibleStart: false,
       isDateTimePickerVisibleEnd: false,
-      image:'',
+      // image:'',
     }
   }
 
@@ -48,7 +49,7 @@ async componentWillMount(){
       alert('Please add name')
   } 
   else if (!decscrition && decscrition.length < 10) {
-      // alert('Describe briefly ')
+      alert('Describe briefly ')
   } else if (!category) {
       alert('Insert Category')
   }
@@ -62,9 +63,9 @@ async componentWillMount(){
   else if (!Bid) {
     alert('Please Add Minimum Price')
   } 
-  // else if (!image) {
-  //     alert('Please Select Image')
-  // }
+  else if (!image) {
+      alert('Please Select Image')
+  }
   else {
     // alert('upload Your Auction')
     this.props.createAuction(this.state)
@@ -371,7 +372,7 @@ inputPrice: {
   backgroundColor: 'rgba(99, 172, 221,0.5)',
   color: '#fff',
   height: 34,
-  width: 70,
+  width: 100,
   paddingHorizontal: 10,
   // paddingVertical: 16,
   justifyContent: 'center',

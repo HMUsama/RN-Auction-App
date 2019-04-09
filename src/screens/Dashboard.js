@@ -109,11 +109,11 @@ _onRefresh = () => {
               />}
           >
             
-                      <View style={{height:200,marginTop:20,flex:1}}>
+                      {/* <View style={{height:200,marginTop:20,flex:1}}>
                       <Text style={{ alignItems: 'center', fontSize: 25, fontWeight: "bold",
                          color: '#072134', paddingLeft: 55 }}>Up Comming Bid's</Text>
                             <ScrollView  horizontal={true}  showsHorizontalScrollIndicator={false}>
-                          
+                           */}
                             {/* {
                               Users.map((i,index)=>{
                                 console.log(">>>>>>>>>>>>>>>>>>>>>>>>>key",index);
@@ -124,8 +124,8 @@ _onRefresh = () => {
                                       name={i.Name}/>
                               })
                             } */}
-                            </ScrollView>
-                        </View>
+                            {/* </ScrollView>
+                        </View> */}
                       
                         <View style={{marginTop:15}}>
                         <Text style={{ fontSize: 25, fontWeight: "bold", color: '#072134', paddingLeft: 50,marginTop:5 }}> Live Auctions</Text>
@@ -146,9 +146,9 @@ _onRefresh = () => {
                             </ScrollView>
                         </View>
                        
-                        <View>
+                         {/* <View>
                         <Text style={{ alignItems: 'center', fontSize: 25, fontWeight: "bold", color: '#072134', paddingLeft: 50 }}>Complete Auction's</Text>
-                        <ScrollView  horizontal={false}  showsHorizontalScrollIndicator={false}>
+                        <ScrollView  horizontal={false}  showsHorizontalScrollIndicator={false}> */}
                             {/* {
                               Users.map((i,index)=>{
                                 // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>Map",i);
@@ -163,12 +163,8 @@ _onRefresh = () => {
                                   />
                               })
                             } */}
-                               {/* <LiveBit  imageUri={require('../../assets/auction.png')} />
-                               <LiveBit/>
-                               <LiveBit/>
-                               <LiveBit/> */}
-                            </ScrollView>
-                        </View>
+                            {/* </ScrollView>
+                        </View>  */}
 
           </ScrollView>
       </View>

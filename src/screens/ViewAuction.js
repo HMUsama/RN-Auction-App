@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View ,ScrollView, Image, Text,AsyncStorage,
-  TouchableOpacity, ActivityIndicator, RefreshControl, Button} from 'react-native'
+  TouchableOpacity, RefreshControl, Button} from 'react-native'
 import { Header } from 'react-native-elements'
 import MenuButton from '../components/button/MenuButton'
 import Modal from 'react-native-modal'
@@ -10,23 +10,25 @@ import Modal from 'react-native-modal'
 // import { firestoreConnect } from 'react-redux-firebase'
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import Category from '../components/category/Category'
+import { List, ListItem } from 'react-native-elements'
 
  class ViewAuction extends React.Component {
   constructor(){
-    super()
+    super()  
     this.state={
-      ID:''
+      ID:'',
+      Users:[],
+      image:"",
     }
   }
-  getAccountFromFirestore (){
+  getAccountFromFirestore = async () => {
     try {
-      const db = firebase.firestore();
-     db.collection('Auction').doc().get().then(res=>{
-      console.log("--------------------------------------->>-My Auction",res.data());
-     })
-      // db.docs.map( a => a.data());
-      // console.log("--------------------------------------->>-My Auction",data);
-      // this.setState({ Users: data });
+      const accounts = await firebase.firestore().collection('Auction').get();
+      const data = accounts.docs.map( a => a.data());
+      console.log("----------------------------------------CCCC----------------------------------------",data);
+      console.log("----------------------------------------CCCC----------------------------------------",data.Image);
+      this.setState({ Users: data,image:data.Image });
     } catch (err) {
       console.error(err);
     }
@@ -57,10 +59,24 @@ import 'firebase/firestore';
             <View>
                 <Text style={{ alignItems: 'center', fontSize: 25, 
                                fontWeight: "bold", color: '#072134', 
-                               paddingLeft: 50 }}>Complete Auction's</Text>
+                               paddingLeft: 50 }}>My Auction's</Text>
 
                 <ScrollView  horizontal={false}  showsHorizontalScrollIndicator={false}>
-                  
+                <Image source={{ uri:this.state.image }} style={{ width: 270, height: 230 }} />
+                            {/* {
+                            this.state.Users.map((i,index)=>{
+                                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>key",index);
+                              return   <Category 
+                                      key={index}
+                                      imageUri={i.Image}
+                                      name={i.Name}/>
+                              })
+                            } */}
+                            {/* <List containerStyle={{marginBottom: 20}}>
+                            <ListItem
+                                   
+                                  />
+                            </List> */}
                 </ScrollView>
             </View>
       </View>

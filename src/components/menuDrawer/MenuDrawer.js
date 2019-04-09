@@ -63,7 +63,7 @@ async componentWillMount(){
              </View>
       {/* </ScrollView> */}
             <View style={styles.footer}>
-                <Text style={styles.disription}>This Product by SMIT </Text>
+                <Text style={styles.disription}>This Product by Panacloud </Text>
                 <Text style={styles.version}>1.0</Text>
             </View>
      </View>

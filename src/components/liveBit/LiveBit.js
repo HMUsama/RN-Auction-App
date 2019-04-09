@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, ScrollView, StyleSheet, Image,Button} from "react-native";
+import {View, Text, ScrollView, StyleSheet, Image,Button,AsyncStorage} from "react-native";
 import { LinearGradient } from 'expo';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -12,19 +12,37 @@ class LiveBit extends Component {
                     promptValue: '',
                     showPrompt: false,
                     currentIndex:this.props.index,
-                    id:this.props.id
+                    id:this.props.id,
+                    ID:'',
                 }
+
+    async componentWillMount(){
+      let userINFO = await AsyncStorage.getItem('userINFO');
+      let U = JSON.parse(userINFO);
+      this.setState({
+          ID:U.ID,
+      })
+    }
      
     _onPromptSubmit = ( inputValue ) => {
-        const {id,currentIndex,promptValue} = this.state
-        console.log("ID",id)
+        const {id,currentIndex,promptValue,ID} = this.state
+        console.log("id  user >>",id)
+        console.log("ID current user ",id)
         console.log("inputValue",inputValue)
         console.log("currentIndex",currentIndex)
         const db = firebase.firestore();
-        db.collection("Auction").doc(id).update(
-            "Bid", inputValue
-        );
-        alert("Your Bid submit")
+        // db.collection("Auction").doc(id).update(
+          if(id != ID){
+              
+            db.collection("Auction").doc(id).update(
+              "Bid", inputValue
+              );
+              alert("Your Bid submit")
+          }else{
+            alert("You are admin")
+          }
+           
+        
         this.setState({
           promptValue: inputValue,
           showPrompt: false
