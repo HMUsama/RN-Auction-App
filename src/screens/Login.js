@@ -4,6 +4,7 @@ import {userLogin} from '../store/actions/authAction'
 import { StyleSheet, Text, View ,Button,AsyncStorage,TouchableOpacity} from 'react-native'
 import { Tile } from 'react-native-elements'
 import firestore from '../config/FbConfig'
+import firebase from 'firebase'
 
 class Login extends React.Component {
   constructor(){
@@ -16,7 +17,6 @@ class Login extends React.Component {
     }
   }
 
-  
 upload(){
   const { ID,Name,Picture} = this.state;
   let userINFO={
@@ -29,20 +29,68 @@ upload(){
   this.props.userLogin(this.state)
   this.props.navigation.navigate("Drawer")
 }
+componentDidMount(){
+  firebase.auth().onAuthStateChanged((user)=> {
+    console.log("user",user)
+    // if (user) {
+    //  this.props.navigation.navigate("Drawer");
+    // } else {
+    //   // No user is signed in.
+    //   this.props.navigation.navigate("Login");
+    // }
+  });
+}
+
+async componentWillMount(){
+//  componentWillMount(){
+  let userINFO = await AsyncStorage.getItem('userINFO');
+  let U = JSON.parse(userINFO);
+  this.setState({
+      id:U.ID,
+  })
+  const {ID} = this.state;
+  console.log("ID===========",ID)
+  if(ID){
+    this.props.navigation.navigate("Drawer")
+  }
+}
 
 Login=async()=> {
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1996325183779367', {
       permissions: ['public_profile'],
     });
-  if (type === 'success') {
+
+  if (type === 'success') { 
+    // const credential = firebase.auth.FacebookAuthProvider.credential(token)
+    // console.log(success.additionalUserInfo.profile.name, 'success******');
+    // var currentUID = success.user.uid
+    // var obj = {
+    //     name: success.additionalUserInfo.profile.name,
+    //     UID: success.user.uid,
+    //     photo: success.user.photoURL,
+    //     Token: token,
+    //     status: 'unblock'
+
+    // }
+    // firebase.auth().signInAndRetrieveDataWithCredential(credential).then((success) => {
+    //   console.log(success.additionalUserInfo.profile.name, 'success******');
+    //   var currentUID = success.user.uid
+    //   var obj = {
+    //       name: success.additionalUserInfo.profile.name,
+    //       UID: success.user.uid,
+    //       photo: success.user.photoURL,
+    //       Token: token,
+    //       status: 'unblock'
+
+    //   }
+    //   firebase.database().ref('/Users/' + currentUID).update(obj);
+    // }) .catch((error) => {console.log('error',error)
+    // })
+  
     // Get the user's name using Facebook's Graph API
     const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`)
     const userInfo = await response.json()
-    
-    console.log("userINFO",userInfo)
-    console.log("ID",userInfo.id)
-    console.log("Name",userInfo.name)
-    console.log("Picture",userInfo.picture.data.url)
+  
     this.setState({
       userInfo,
       ID:userInfo.id,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View ,ScrollView, Image, Text,
-   TouchableOpacity, ActivityIndicator, RefreshControl, Button,
+   TouchableOpacity, ActivityIndicator, RefreshControl, Button,YellowBox,
    SafeAreaView,
    TextInput,
    Platform,
@@ -15,8 +15,11 @@ import {compose} from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import Category from '../components/category/Category'
 import LiveBit from '../components/liveBit/LiveBit'
+import Expired from '../components/liveBit/Expired'
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import moment from 'moment'
+YellowBox.ignoreWarnings(['Warning: ...']);
 
 const    {height , width} = Dimensions.get('window')
 
@@ -31,25 +34,34 @@ class Dashboard extends React.Component {
     result:null,
     }
 }
-
-getAccountFromFirestore = async () => {
+componentWillUpdate(){
+  // this.getDataFireStore();
+}
+componentDidUpdate(){
+  this.getDataFireStore();
+}
+getDataFireStore = async () => {
   try {
+
     const allAuctions = await firebase.firestore().collection('Auction').get();
     const data = allAuctions.docs.map( a => a.data());
-    console.log("----------------------------------------CCCC----------------------------------------",data);
+    console.log("----------------------------------------Dashboard--->",data);
     this.setState({ Users: data });
   } catch (err) {
     console.error(err);
   }
 };
+
  componentWillMount (){
-   this.getAccountFromFirestore();
+
+  this.getDataFireStore();
 
     this.startHeaderHieght=80
     if(Platform.OS == 'android'){
         this.startHeaderHieght = 75 + StatusBar.currentHeight;
     }
 }
+
 serach=async() =>{
 // serach(){
   const {serach}  = this.state;
@@ -68,14 +80,13 @@ _onRefresh = () => {
   const { Users } = this.state;
   if (Users) {
       setTimeout(() => {
-          this.getAccountFromFirestore();
+          this.getDataFireStore();
       }, 10)
   }
   this.setState({ refreshing: false });
 }
   render() {
     const {Users,result,serach} = this.state;
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>BBBBB",result)
   
     return (
 
@@ -117,24 +128,6 @@ _onRefresh = () => {
                   onRefresh={this._onRefresh}
               />}
           >
-            
-                      {/* <View style={{height:200,marginTop:20,flex:1}}>
-                      <Text style={{ alignItems: 'center', fontSize: 25, fontWeight: "bold",
-                         color: '#072134', paddingLeft: 55 }}>Up Comming Bid's</Text>
-                            <ScrollView  horizontal={true}  showsHorizontalScrollIndicator={false}>
-                           */}
-                            {/* {
-                              Users.map((i,index)=>{
-                                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>key",index);
-                                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>Users",i.Image);
-                              return   <Category 
-                                      key={index}
-                                      imageUri={i.Image}
-                                      name={i.Name}/>
-                              })
-                            } */}
-                            {/* </ScrollView>
-                        </View> */}
                       
                         <View style={{marginTop:15}}>
                         <Text style={{ fontSize: 25, fontWeight: "bold", color: '#072134', paddingLeft: 50,marginTop:5 }}> Live Auctions</Text>
@@ -144,6 +137,27 @@ _onRefresh = () => {
                          <ScrollView  horizontal={true}  showsHorizontalScrollIndicator={false}>
                          {
                               result.map((i,index)=>{
+                                if(i.EndTime > moment(Date.now()).format('LLLL')){
+                                  return   <Expired
+                                  index={index}
+                                  id={i.ID}
+                                  bid={i.Bid}
+                                  imageUri={i.Image}
+                                  S_Time={i.StartTime}
+                                  E_Time={i.EndTime}
+                                  name={i.Name}
+                                />
+                                }else{
+                                  return   <LiveBit
+                                  index={index}
+                                  id={i.ID}
+                                  bid={i.Bid}
+                                  imageUri={i.Image}
+                                  S_Time={i.StartTime}
+                                  E_Time={i.EndTime}
+                                  name={i.Name}
+                                />
+                                }
                                 return   <LiveBit
                                 index={index}
                                 id={i.ID}
@@ -161,42 +175,49 @@ _onRefresh = () => {
                                      <ScrollView  horizontal={true}  showsHorizontalScrollIndicator={false}>
                           {
                             Users.map((i,index)=>{
-                            return   <LiveBit
-                                      index={index}
-                                      id={i.ID}
-                                      bid={i.Bid}
-                                      imageUri={i.Image}
-                                      S_Time={i.StartTime}
-                                      E_Time={i.EndTime}
-                                      name={i.Name}
-                                    />
-                                  })
+                              // console.log("End>>>>>>>",i.EndTime)
+                              // console.log("Cur>>>>>>>",moment(Date.now()).format('LLLL'))
+                          if(i.EndTime <= moment(Date.now()).format('LLLL')){
+                            console.log("StartTime>>>>>>>>>",i.StartTime)
+                          return   <LiveBit
+                          index={index}
+                          id={i.ID}
+                          bid={i.Bid}
+                          imageUri={i.Image}
+                          S_Time={i.StartTime}
+                          E_Time={i.EndTime}
+                          name={i.Name}
+                        />
+                           
+                          }else{
+                            console.log("End Time=========",i.EndTime)
+                            return   <Expired
+                            index={index}
+                            id={i.ID}
+                            bid={i.Bid}
+                            imageUri={i.Image}
+                            S_Time={i.StartTime}
+                            E_Time={i.EndTime}
+                            name={i.Name}
+                          />
+
+                          //   return   <LiveBit
+                          //   index={index}
+                          //   id={i.ID}
+                          //   bid={i.Bid}
+                          //   imageUri={i.Image}
+                          //   S_Time={i.StartTime}
+                          //   E_Time={i.EndTime}
+                          //   name={i.Name}
+                          // />
+                           }
+                          })
                           }
                           </ScrollView>
                           </View>
                         }
                             </ScrollView>
                         </View>
-                       
-                         {/* <View>
-                        <Text style={{ alignItems: 'center', fontSize: 25, fontWeight: "bold", color: '#072134', paddingLeft: 50 }}>Complete Auction's</Text>
-                        <ScrollView  horizontal={false}  showsHorizontalScrollIndicator={false}> */}
-                            {/* {
-                              Users.map((i,index)=>{
-                                // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>Map",i);
-                              return   <LiveBit
-                                      key={index}
-                                      bid={i.Bid}
-                                      imageUri={i.Image}
-                                      S_Time={i.StartTime}
-                                      E_Time={i.EndTime}
-                                      key={i.ID}
-                                      name={i.Name}
-                                  />
-                              })
-                            } */}
-                            {/* </ScrollView>
-                        </View>  */}
 
           </ScrollView>
       </View>
@@ -206,18 +227,11 @@ _onRefresh = () => {
   }
 }
 
-// const mapDispatchToProps=(dispatch)=>{
-//   return {
-//     createAuction:(Auction) => dispatch(createAuction(Auction))
-//   }
-// }
+
 
 const mapStateToProps=(state,ownSnap)=>{
-  // console.log("Dashboard=====--------------------------------------------",state.firestore.ordered.Auction)
-  // console.log("IDDDDDDDDDDDDDDDD------------------------------------",ownSnap)
   const data = state.firestore.ordered.Auction;
   const Auction = [data]
-  // console.log("==================>>>>>>>>>>.",Auction)
   return {
       // All_Auctioner:Auction,
   }

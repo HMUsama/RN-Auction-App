@@ -71,6 +71,7 @@ else {
   // alert('upload Your Auction')
   this.props.createAuction(this.state)
 }
+// this.props.navigation.navigate("Dashboard") 
 }
 
 
@@ -83,45 +84,9 @@ ImagePicker = async () => {
       if (!result.cancelled) {
           this.setState({ image: result.uri });
         }
-
-  // let result = await ImagePicker.launchImageLibraryAsync({
-  //   allowsEditing: true,
-  // });
-
-  // console.log(result);
-
-  // if (!result.cancelled) {
-  //   this.setState({ image: result.uri });
-  // }
-
-
-  // await Permissions.askAsync(Permissions.CAMERA);
-  //     await Permissions.askAsync(Permissions.CAMERA_ROLL);
-  //     const pickerResult = await ImagePicker.launchImageLibraryAsync({
-  //         allowsEditing: true,
-  //         // aspect: 1,
-  //     });
-  //     this._handleImagePicked(pickerResult);
 };
 
-// _handleImagePicked = async (pickerResult) => {
-//   console.log("------------",pickerResult)
-//   try {
 
-//       if (!pickerResult.cancelled) {
-//           uploadUrl = await uploadImageAsync(pickerResult.uri);
-//           console.log('url>>>>>>>>>>>>>',uploadUrl )
-//           this.setState({ image: uploadUrl });
-//       }
-//   } catch (e) {
-//       console.log(e);
-//       alert('Upload failed, sorry :(');
-//   } finally {
-//       // this.setState({ uploading: false });
-//       console.log('finally');
-
-//   }
-// };
 
 
 
@@ -131,8 +96,10 @@ ImagePicker = async () => {
   _hideDateTimePickerStart = () => this.setState({ isDateTimePickerVisibleStart: false });
 
   StartDatePicked = (date) => {
+    console.log("Data--------",Date.now())
       this.setState({
           StartTime: moment(date).format("LLLL")
+          // StartTime: format("LLLL")
       })
       this._hideDateTimePickerStart();
   };
@@ -144,6 +111,7 @@ ImagePicker = async () => {
   EndDatePicked = (date) => {
       this.setState({
           EndTime: moment(date).format("LLLL")
+          // EndTime: format("LLLL")
       })
       this._hideDateTimePickerEnd();
   };
@@ -323,7 +291,7 @@ ImagePicker = async () => {
                         </View>     
                       </View>
 {/* ==================== */}  
-                      <View style={{ height: 50, marginBottom:10,borderRadius: 10}}>
+                      <View style={{ height: 50, marginBottom:30,borderRadius: 10}}>
                             <Button
                                 onPress={() => this.uploadAuction()}
                                 title="Upload"
@@ -430,26 +398,3 @@ submitButton:{
 });
 
 
-// async function uploadImageAsync(uri) {
-//   const blob = await new Promise((resolve, reject) => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.onload = function () {
-//         resolve(xhr.response);
-//     };
-//     xhr.onerror = function (e) {
-//         console.log(e);
-//         reject(new TypeError('Network request failed'));
-//     };
-//     xhr.responseType = 'blob';
-//     xhr.open('GET', uri, true);
-//     xhr.send(null);
-// });
-// const ref = firebase.storage() .ref() .child(uuid.v4());
-// const snapshot = await ref.put(blob);
-// console.log(blob)
-
-// // We're done with the blob, close and release it
-// blob.close();
-
-// return await snapshot.ref.getDownloadURL();
-// }

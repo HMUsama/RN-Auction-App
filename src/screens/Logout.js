@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // color:'#f47373',
     marginTop:40,
+    borderRadius:15,
     fontSize:45,
     },
 });

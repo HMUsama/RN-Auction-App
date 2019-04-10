@@ -1,18 +1,15 @@
 import React from 'react';
-import {StyleSheet, View ,ScrollView, Image, Text,AsyncStorage,  TouchableHighlight,
+import {StyleSheet, View ,ScrollView, Image, Text,AsyncStorage,  TouchableHighlight,YellowBox,
   TouchableOpacity, RefreshControl, Button} from 'react-native'
 import { Header } from 'react-native-elements'
 import MenuButton from '../components/button/MenuButton'
 import Modal from 'react-native-modal'
-// import {  MapView, Permissions, Location,Constants,IntentLauncherAndroid} from 'expo'
-// import { connect } from 'react-redux'
-// import {compose} from 'redux'
-// import { firestoreConnect } from 'react-redux-firebase'
 import * as firebase from 'firebase';
 import 'firebase/firestore'
 import moment from 'moment'
 import AnimatedLoader from "react-native-animated-loader"
 import Category from '../components/category/Category'
+YellowBox.ignoreWarnings(['Warning: ...']);
 
 import { List, ListItem } from 'react-native-elements'
 
@@ -45,7 +42,7 @@ import { List, ListItem } from 'react-native-elements'
 
     const allAuctions = await firebase.firestore().collection('Auction').where('ID','==',this.state.id).get();
     const data = allAuctions.docs.map( a => a.data());
-    console.log("----------------------------------------Data----------------------------------------",data);
+    console.log("----------------------------------------My Auction>>>",data);
     this.setState({ Users: data });
   }
   _onRefresh = () => {
@@ -133,23 +130,6 @@ import { List, ListItem } from 'react-native-elements'
     );
   }
 }
-// const mapDispatchToProps=(dispatch)=>{
-//   return {
-//     Location:(CurrentLocation) => dispatch(Location(CurrentLocation))
-//   }
-// }
-
-// const mapStateToProps=(state,ownProps)=>{
-//   return {
-//       User:users
-//   }
-// }
-// export default compose(connect(mapStateToProps),
-//                         firestoreConnect([
-//                             {collection:"circle"}
-//                         ])
-//                         )
-//                         (CreatePost);
 export default MyAuction;
 
 const styles = StyleSheet.create({

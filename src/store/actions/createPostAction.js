@@ -10,10 +10,10 @@ export const createAuction = (Auction) =>{
         const ID = Auction.ID
         console.log("ID-----------------",ID)
 
-        firestore .collection("Auction").doc(ID).set({
-    //     firestore .collection("Auction").doc(uuid).set({
-    //     // firestore .collection("allAuctions").doc().collection('Auctions').add({
-    //     // firestore.collection("Users").doc(ID).collection('Auction').doc(uid).add({ 
+        // firestore .collection("Auction").doc(ID).set({
+        firestore .collection("Auction").doc().set({
+        // firestore .collection("allAuctions").doc().collection('Auctions').add({
+        // firestore.collection("allAuctions").doc(ID).collection('Auction').doc().add({ 
     //     // firestore.collection("Users").doc(ID).collection('Auction').add({ 
     //       uid:uuid,
           ID:Auction.ID,  
